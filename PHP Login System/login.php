@@ -7,18 +7,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $username = $_POST['username'];
   $password = $_POST['password'];
 
-    $sql = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$password'";
-    $result = mysqli_query($conn, $sql);
-    $num = mysqli_num_rows($result);
+  // $sql = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$password'";
+  $sql = "SELECT * FROM `users` WHERE `username` = '$username'";
+  $result = mysqli_query($conn, $sql);
+  $num = mysqli_num_rows($result);
   if($num ==1){
-      $login = true;
-      session_start();
-      $_SESSION['loggedin'] = TRUE;
-      $_SESSION['username'] = $username;
-      header("location: /PHP-Learning/PHP%20Login%20System/welcome.php");
-      exit();;;;;;;;;;;;
-      
-
+    while($row = mysqli_fetch_assoc($result)){
+      if(password_verify($password, $row['password'])){
+        $login = true;
+        session_start();
+        $_SESSION['loggedin'] = TRUE;
+        $_SESSION['username'] = $username;
+        header("location: /PHP-Learning/PHP%20Login%20System/welcome.php");
+        exit();
+      }else{
+        $showError = "Invalid credintials";
+      }
+    }
   }else{
     $showError = "Invalid credintials";
   }
