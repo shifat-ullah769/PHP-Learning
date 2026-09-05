@@ -1,4 +1,5 @@
 <?php
+session_start();
 $showError = false;
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     include '_dbconnect.php';
@@ -11,7 +12,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     if($numRows == 1){
         $rows = mysqli_fetch_assoc($result);
         if(password_verify($pass, $rows['user_password'])){
-            session_start();
             $_SESSION['loggedin'] = true;
             $_SESSION['email'] = $email;
             header("Location: /PHP-Learning/Forum%20Project/index.php");
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             header("Location: /PHP-Learning/Forum%20Project/index.php");
         }
     }
-
+     header("Location: /PHP-Learning/Forum%20Project/index.php");
 }
 
 ?>

@@ -40,7 +40,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
       <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       <p class="text-light my-0 mx-2">Welcome ' . $_SESSION['email'] . '
       </p> 
-      <button class="btn btn-outline-success ml-2" data-toggle="modal" data-target="#loginModal">Log out</button>
+      <a href="partials/_logout.php" class="btn btn-outline-success ml-2">Log out</a>
       </form>';
 } else {
   echo '<form class="form-inline my-2 my-lg-0">
