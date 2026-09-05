@@ -23,6 +23,33 @@
     <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
     <?php
+    function timeAgo($datetime)
+    {
+        $timestamp = strtotime($datetime);
+        $diff = time() - $timestamp;
+
+        if ($diff < 60) {
+            return "just now";
+        } elseif ($diff < 3600) {
+            $minutes = floor($diff / 60);
+            return $minutes . " minute" . ($minutes > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 86400) {
+            $hours = floor($diff / 3600);
+            return $hours . " hour" . ($hours > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 2592000) {
+            $days = floor($diff / 86400);
+            return $days . " day" . ($days > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 31536000) {
+            $months = floor($diff / 2592000);
+            return $months . " month" . ($months > 1 ? "s" : "") . " ago";
+        } else {
+            $years = floor($diff / 31536000);
+            return $years . " year" . ($years > 1 ? "s" : "") . " ago";
+        }
+    }
+    ?>
+
+    <?php
     $id = $_GET["catid"];
     /** @var mysqli $conn */
     $sql = "SELECT * FROM `categories` WHERE category_id= $id";
@@ -37,14 +64,14 @@
     <?php
     $showAlert = false;
     $method = $_SERVER['REQUEST_METHOD'];
-    if($method == 'POST'){
+    if ($method == 'POST') {
         //Insert thread in db
         $th_title = mysqli_real_escape_string($conn, $_POST['title']);
         $th_desc = mysqli_real_escape_string($conn, $_POST['desc']);
         $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '0', current_timestamp())";
         $result = mysqli_query($conn, $sql);
         $showAlert = true;
-        if($showAlert){
+        if ($showAlert) {
             echo '
             <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Success! </strong>Your thread has been added. Please wait for someone to respond.
@@ -80,7 +107,7 @@
     </div>
     <div class="container">
         <h1 class="py-2">Start a discussion.</h1>
-        <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post">
+        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
             <div class="form-group">
                 <label for="title">Problem Title</label>
                 <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter your problem title">
@@ -108,13 +135,14 @@
             $id = $rows['thread_id'];
             $title = $rows['thread_title'];
             $desc = $rows['thread_desc'];
-
+            $thread_time = $rows['timestamp'];
 
 
             echo '<div class="media my-3">
             <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
             <div class="media-body">
-                <h5 class="mt-0"><a class="text-dark" href="thread.php?threadid=' . $id . '">' . $title . '</a> </h5>
+                <p class="font-weight-bold my-0">Anonymous user at ' . timeAgo($thread_time) . '</p>
+                <h5 class="mt-0"><a class="text-dark mt-0" href="thread.php?threadid=' . $id . '">' . $title . '</a> </h5>
                 ' . $desc . '
             </div>
         </div>';

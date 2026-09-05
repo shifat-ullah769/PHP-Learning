@@ -9,22 +9,22 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form>
+            <form action="/PHP-Learning/Forum%20Project/partials/_handleSignup.php" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                        <label for="signupEmail">Email address</label>
+                        <input type="email" class="form-control" id="signupEmail" name="signupEmail" aria-describedby="emailHelp"
                             placeholder="Enter email">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" name="signupPassword" placeholder="Enter Password">
                     </div>
                     <div class="form-group">
-                        <label for="cpassword">Confirm Password</label>
-                        <input type="password" class="form-control" id="cpassword" placeholder="Confirm ur Password">
+                        <label for="signupCpassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="signupCpassword" name="signupCpassword" placeholder="Confirm ur Password">
                     </div>
                     <button type="submit" class="btn btn-primary">Create account</button>
                 </div>

@@ -44,4 +44,12 @@ echo '<nav class="navbar navbar-expand-lg navbar-light bg-dark">
 include 'partials/_loginmodal.php';
 include 'partials/_signupmodal.php';
 
-?>
+if (isset($_GET['signupsuccess']) && $_GET['signupsuccess'] == "true") {
+  echo '<div class="alert alert-success alert-dismissible fade show my-0" role="alert">
+  <strong>Congratulations!</strong> Your account has been created.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  ';
+}

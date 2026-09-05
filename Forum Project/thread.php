@@ -23,6 +23,34 @@
     <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
     <?php
+    function timeAgo($datetime)
+    {
+        $timestamp = strtotime($datetime);
+        $diff = time() - $timestamp;
+
+        if ($diff < 60) {
+            return "just now";
+        } elseif ($diff < 3600) {
+            $minutes = floor($diff / 60);
+            return $minutes . " minute" . ($minutes > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 86400) {
+            $hours = floor($diff / 3600);
+            return $hours . " hour" . ($hours > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 2592000) {
+            $days = floor($diff / 86400);
+            return $days . " day" . ($days > 1 ? "s" : "") . " ago";
+        } elseif ($diff < 31536000) {
+            $months = floor($diff / 2592000);
+            return $months . " month" . ($months > 1 ? "s" : "") . " ago";
+        } else {
+            $years = floor($diff / 31536000);
+            return $years . " year" . ($years > 1 ? "s" : "") . " ago";
+        }
+    }
+    ?>
+
+
+    <?php
     $id = $_GET["threadid"];
     /** @var mysqli $conn */
     $sql = "SELECT * FROM `threads` WHERE thread_id= $id";
@@ -36,7 +64,29 @@
 
     ?>
 
-  
+
+    <?php
+    $showAlert = false;
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method == 'POST') {
+        //Insert comment in db
+        $comment = mysqli_real_escape_string($conn, $_POST['comment']);
+        $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES ('$comment', '$id', '0', current_timestamp())";
+        $result = mysqli_query($conn, $sql);
+        $showAlert = true;
+        if ($showAlert) {
+            echo '
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success! </strong>Your comment has been added. 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            ';
+        }
+    }
+    ?>
+
     <!-- Category container starts here. -->
 
     <div class="container my-3">
@@ -46,45 +96,59 @@
             <hr class="my-4">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid repellat cum voluptatum explicabo suscipit consequuntur alias doloremque ratione velit distinctio.
             <p>
-                <b>Posted by: Harry</b>
+                Posted by: <b>Harry</b>
             </p>
         </div>
     </div>
 
     <div class="container">
+        <h1 class="py-2">Start a discussion.</h1>
+        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+            <div class="form-group">
+                <label for="comment">Post a comment</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Post Comment</button>
+        </form>
+    </div>
+
+    <div class="container">
         <h1 class="my-2">Discussions</h1>
 
-        <!-- <?php
-            $id = $_GET["catid"];
-            /** @var mysqli $conn */
-            $sql = "SELECT * FROM `threads` WHERE thread_cat_id= $id";
-            $result = mysqli_query($conn, $sql);
-            while ($rows = mysqli_fetch_assoc($result)) {
-                $id = $rows['thread_id'];
-                $title = $rows['thread_title'];
-                $desc = $rows['thread_desc'];
+        <?php
+        $id = $_GET["threadid"];
+        /** @var mysqli $conn */
+        $sql = "SELECT * FROM `comments` WHERE thread_id= $id";
+        $result = mysqli_query($conn, $sql);
+        $noResult = true;
+        while ($rows = mysqli_fetch_assoc($result)) {
+            $noResult = false;
+            $content = $rows['comment_content'];
+            $time = $rows['comment_time'];
+            $comment_by = $rows['comment_by'];
+            $comment_id = $rows['comment_id'];
 
 
 
             echo '<div class="media my-3">
             <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
             <div class="media-body">
-                <h5 class="mt-0"><a class="text-dark" href="thread.php">' . $title . '</a> </h5>
-                ' . $desc . '
+                ' . $content . '
+                <p class="font-weight-bold my-0">Anonymous user at ' . timeAgo($time) . '</p>
             </div>
             </div>';
-            }
+        }
 
-            if ($noResult) {
-                echo '<div class="jumbotron jumbotron-fluid">
+        if ($noResult) {
+            echo '<div class="jumbotron jumbotron-fluid">
                 <div class="container">
                     <p class="display-4">No Threads Yet.</p>
                     <p>Be the first person to ask a question.</p>
                     </div>
                 </div>';
-            }
+        }
 
-        ?>  -->
+        ?>
 
 
     </div>
