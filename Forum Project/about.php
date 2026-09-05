@@ -10,7 +10,7 @@
 
     <title>uDoubt-Ask your doubts</title>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <?php include 'partials/_header.php'; ?>
 
     

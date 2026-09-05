@@ -19,7 +19,7 @@
     <title>uDoubt-Ask your doubts</title>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
 
@@ -72,6 +72,7 @@
             $result = mysqli_query($conn, $sql);
             while($rows = mysqli_fetch_assoc($result)){
               // echo $rows['category_name'];
+              $id = $rows['category_id'];
               $cat = $rows['category_name'];
               $image = $rows['category_image'];
               $desc = $rows['category_description'];
@@ -82,9 +83,9 @@
                     class="card-img-top category-img"
                     alt="'.$cat.'">
                     <div class="card-body">
-                        <h5 class="card-title">'. $cat . '</h5>
+                        <h5 class="card-title"><a href="threadlist.php?catid='. $id . '">'. $cat . '</a></h5>
                         <p class="card-text">'. substr($desc, 0 , 100) . '.....</p>
-                        <a href="#" class="btn btn-success">Explore Threads</a>
+                        <a href="threadlist.php?catid='. $id . '" class="btn btn-primary">Explore Threads</a>
                     </div>
                 </div>
             </div>';
