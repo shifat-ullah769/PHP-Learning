@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 echo '<nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <a class="navbar-brand" href="/PHP-Learning/Forum%20Project">uDoubt</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,14 +32,26 @@ echo '<nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <a class="nav-link" href="contact.php">Contact</a>
       </li>
     </ul>
-    <div class="row mx-2">
-        <form class="form-inline my-2 my-lg-0">
+    <div class="row mx-2">';
+
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+  echo '<form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      <p class="text-light my-0 mx-2">Welcome ' . $_SESSION['email'] . '
+      </p> 
+      <button class="btn btn-outline-success ml-2" data-toggle="modal" data-target="#loginModal">Log out</button>
+      </form>';
+} else {
+  echo '<form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <button class="btn btn-outline-success ml-2" data-toggle="modal" data-target="#loginModal">Log in</button>
-        <button class="btn btn-outline-success mx-2" data-toggle="modal" data-target="#signupModal">Sign up</button>
-    </div>
+        <button class="btn btn-outline-success mx-2" data-toggle="modal" data-target="#signupModal">Sign up</button>';
+}
+
+echo '</div>
    
   </div>
 </nav>';
@@ -52,4 +67,13 @@ if (isset($_GET['signupsuccess']) && $_GET['signupsuccess'] == "true") {
   </button>
 </div>
   ';
+}
+
+if (isset($_GET['signupsuccess']) && $_GET['signupsuccess'] == "false") {
+  echo '<div class="alert alert-danger alert-dismissible fade show my-0" role="alert">
+    <strong>Error!</strong> ' . $_GET['error'] . '
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>';
 }

@@ -9,16 +9,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form>
+            <form action="/PHP-Learning/Forum%20Project/partials/_handleLogin.php" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                        <label for="loginEmail">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" name="loginEmail" aria-describedby="emailHelp"
                             placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" name="loginPassword" placeholder="Enter Password">
                     </div>
                     <button type="submit" class="btn btn-primary">Log in</button>
                 </div>

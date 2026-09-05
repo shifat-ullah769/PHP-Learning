@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
 
     }
-    header("Location: /PHP-Learning/Forum%20Project/index.php?signupsuccess=false&error=$showError");
+    header("Location: /PHP-Learning/Forum%20Project/index.php?signupsuccess=false&error=" . urlencode($showError));
 }
 
 ?>
