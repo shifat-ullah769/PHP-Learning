@@ -34,6 +34,29 @@
 
     ?>
 
+    <?php
+    $showAlert = false;
+    $method = $_SERVER['REQUEST_METHOD'];
+    if($method == 'POST'){
+        //Insert thread in db
+        $th_title = mysqli_real_escape_string($conn, $_POST['title']);
+        $th_desc = mysqli_real_escape_string($conn, $_POST['desc']);
+        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '0', current_timestamp())";
+        $result = mysqli_query($conn, $sql);
+        $showAlert = true;
+        if($showAlert){
+            echo '
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success! </strong>Your thread has been added. Please wait for someone to respond.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            ';
+        }
+    }
+    ?>
+
 
     <!-- Category container starts here. -->
 
@@ -55,6 +78,21 @@
             </p>
         </div>
     </div>
+    <div class="container">
+        <h1 class="py-2">Start a discussion.</h1>
+        <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post">
+            <div class="form-group">
+                <label for="title">Problem Title</label>
+                <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter your problem title">
+                <small id="emailHelp" class="form-text text-muted">Keep problem title as short and crisp as possible.</small>
+            </div>
+            <div class="form-group">
+                <label for="desc">Elaborate your problem.</label>
+                <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
 
     <div class="container">
         <h1 class="my-2">Browse Questions</h1>
@@ -64,7 +102,9 @@
         /** @var mysqli $conn */
         $sql = "SELECT * FROM `threads` WHERE thread_cat_id= $id";
         $result = mysqli_query($conn, $sql);
+        $noResult = true;
         while ($rows = mysqli_fetch_assoc($result)) {
+            $noResult = false;
             $id = $rows['thread_id'];
             $title = $rows['thread_title'];
             $desc = $rows['thread_desc'];
@@ -74,32 +114,24 @@
             echo '<div class="media my-3">
             <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
             <div class="media-body">
-                <h5 class="mt-0"><a class="text-dark" href="thread.php?threadid='. $id.'">' . $title . '</a> </h5>
+                <h5 class="mt-0"><a class="text-dark" href="thread.php?threadid=' . $id . '">' . $title . '</a> </h5>
                 ' . $desc . '
             </div>
         </div>';
         }
 
+        if ($noResult) {
+            echo '<div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <p class="display-4">No Threads Yet.</p>
+                        <p>Be the first person to ask a question.</p>
+                    </div>
+                </div>';
+        }
         ?>
 
 
-        <!-- <div class="media my-3">
-            <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
-            <div class="media-body">
-                <h5 class="mt-0">Unable to install python packages in linux.</h5>
-                I am unable to install Python packages and need help troubleshooting the issue.
 
-                Here are the details of my setup and the error:
-                1. Operating System: [e.g., Windows 11, macOS Sequoia, Ubuntu]
-                2. The exact command I ran: [e.g., pip install pandas]
-                3. The exact error message or output I received:
-                [Paste the full error text or describe what happened here]
-
-                4. When I run 'python --version' or 'python3 --version', it outputs: [e.g., Python 3.12, or "command not found"]
-                5. When I run 'pip --version', it outputs: [e.g., pip 24.0, or "not recognized"]
-            </div>
-        </div> -->
-        
     </div>
 
 

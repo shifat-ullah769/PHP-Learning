@@ -27,14 +27,16 @@
     /** @var mysqli $conn */
     $sql = "SELECT * FROM `threads` WHERE thread_id= $id";
     $result = mysqli_query($conn, $sql);
+    $noResult = true;
     while ($rows = mysqli_fetch_assoc($result)) {
+        $noResult = false;
         $title = $rows['thread_title'];
         $desc = $rows['thread_desc'];
     }
 
     ?>
 
-
+  
     <!-- Category container starts here. -->
 
     <div class="container my-3">
@@ -53,14 +55,14 @@
         <h1 class="my-2">Discussions</h1>
 
         <!-- <?php
-        $id = $_GET["catid"];
-        /** @var mysqli $conn */
-        $sql = "SELECT * FROM `threads` WHERE thread_cat_id= $id";
-        $result = mysqli_query($conn, $sql);
-        while ($rows = mysqli_fetch_assoc($result)) {
-            $id = $rows['thread_id'];
-            $title = $rows['thread_title'];
-            $desc = $rows['thread_desc'];
+            $id = $_GET["catid"];
+            /** @var mysqli $conn */
+            $sql = "SELECT * FROM `threads` WHERE thread_cat_id= $id";
+            $result = mysqli_query($conn, $sql);
+            while ($rows = mysqli_fetch_assoc($result)) {
+                $id = $rows['thread_id'];
+                $title = $rows['thread_title'];
+                $desc = $rows['thread_desc'];
 
 
 
@@ -70,8 +72,17 @@
                 <h5 class="mt-0"><a class="text-dark" href="thread.php">' . $title . '</a> </h5>
                 ' . $desc . '
             </div>
-        </div>';
-        }
+            </div>';
+            }
+
+            if ($noResult) {
+                echo '<div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <p class="display-4">No Threads Yet.</p>
+                    <p>Be the first person to ask a question.</p>
+                    </div>
+                </div>';
+            }
 
         ?>  -->
 
