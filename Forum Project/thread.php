@@ -101,16 +101,32 @@
         </div>
     </div>
 
-    <div class="container">
-        <h1 class="py-2">Start a discussion.</h1>
-        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+
+    <?php
+
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+        echo '
+        <div class="container">
+        <h1 class="py-2">Post a comment.</h1>
+        <form action="' .  $_SERVER['REQUEST_URI'] . '" method="post">
             <div class="form-group">
-                <label for="comment">Post a comment</label>
+                <label for="comment">Write your comment</label>
                 <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-success">Post Comment</button>
         </form>
-    </div>
+        </div>';
+    } else {
+        echo '
+        <div class="container">
+            <h1 class="py-2">Post a comment</h1>
+            <p class="lead">You are not logged in. You have to be logged in to post a comment.</p>
+        </div>';
+    }
+
+    ?>
+
+
 
     <div class="container">
         <h1 class="my-2">Discussions</h1>

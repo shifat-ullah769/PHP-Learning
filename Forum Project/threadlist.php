@@ -105,21 +105,37 @@
             </p>
         </div>
     </div>
-    <div class="container">
-        <h1 class="py-2">Start a discussion.</h1>
-        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-            <div class="form-group">
-                <label for="title">Problem Title</label>
-                <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter your problem title">
-                <small id="emailHelp" class="form-text text-muted">Keep problem title as short and crisp as possible.</small>
-            </div>
-            <div class="form-group">
-                <label for="desc">Elaborate your problem.</label>
-                <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-    </div>
+
+    <?php
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+        echo '<div class="container">
+            <h1 class="py-2">Start a discussion.</h1>
+            <form action="' .  $_SERVER["REQUEST_URI"] . '" method="post">
+                <div class="form-group">
+                    <label for="title">Problem Title</label>
+                    <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter your problem title">
+                    <small id="emailHelp" class="form-text text-muted">Keep problem title as short and crisp as possible.</small>
+                </div>
+                <div class="form-group">
+                    <label for="desc">Elaborate your problem.</label>
+                    <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>';
+    } else {
+        echo '
+        <div class="container">
+            <h1 class="py-2">Start a discussion.</h1>
+            <p class="lead">You are not logged in. You have to be logged in to start a discussion.</p>
+        </div>';
+    }
+
+
+
+    ?>
+
+
 
     <div class="container">
         <h1 class="my-2">Browse Questions</h1>
