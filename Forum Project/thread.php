@@ -71,7 +71,14 @@
     if ($method == 'POST') {
         //Insert comment in db
         $comment = mysqli_real_escape_string($conn, $_POST['comment']);
-        $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES ('$comment', '$id', '0', current_timestamp())";
+
+        $user_email = $_SESSION['email'];
+        $sql_user = "SELECT user_id FROM `users` WHERE user_email = '$user_email'";
+        $result_user = mysqli_query($conn, $sql_user);
+        $user_data = mysqli_fetch_assoc($result_user);
+        $user_id = $user_data['user_id'];
+
+        $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES ('$comment', '$id', '$user_id', current_timestamp())";
         $result = mysqli_query($conn, $sql);
         $showAlert = true;
         if ($showAlert) {
@@ -143,14 +150,17 @@
             $time = $rows['comment_time'];
             $comment_by = $rows['comment_by'];
             $comment_id = $rows['comment_id'];
-
+            $comment_user_id = $rows['comment_by'];
+            $sql2 = "SELECT user_email FROM `users` WHERE user_id = '$comment_user_id'";
+            $result2 = mysqli_query($conn, $sql2);
+            $rows2 = mysqli_fetch_assoc($result2);
 
 
             echo '<div class="media my-3">
             <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
             <div class="media-body">
                 ' . $content . '
-                <p class="font-weight-bold my-0">Anonymous user at ' . timeAgo($time) . '</p>
+                <p class="font-weight-bold my-0">Responder: ' . $rows2['user_email'] . ' at ' . timeAgo($time) . '</p>
             </div>
             </div>';
         }
@@ -159,7 +169,7 @@
             echo '<div class="jumbotron jumbotron-fluid">
                 <div class="container">
                     <p class="display-4">No Threads Yet.</p>
-                    <p>Be the first person to ask a question.</p>
+                    <p>Be the first person to comment on a question.</p>
                     </div>
                 </div>';
         }

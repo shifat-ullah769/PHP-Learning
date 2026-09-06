@@ -68,7 +68,8 @@
         //Insert thread in db
         $th_title = mysqli_real_escape_string($conn, $_POST['title']);
         $th_desc = mysqli_real_escape_string($conn, $_POST['desc']);
-        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '0', current_timestamp())";
+        $user_id = $_SESSION['user_id'];
+        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '$user_id', current_timestamp())";
         $result = mysqli_query($conn, $sql);
         $showAlert = true;
         if ($showAlert) {
@@ -116,6 +117,7 @@
                     <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter your problem title">
                     <small id="emailHelp" class="form-text text-muted">Keep problem title as short and crisp as possible.</small>
                 </div>
+                <input type="hidden" name="user_id" value="'. $_SESSION["user_id"] .'">
                 <div class="form-group">
                     <label for="desc">Elaborate your problem.</label>
                     <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
@@ -152,14 +154,19 @@
             $title = $rows['thread_title'];
             $desc = $rows['thread_desc'];
             $thread_time = $rows['timestamp'];
-
+            $thread_user_id = $rows['thread_user_id'];
+            $sql2 = "SELECT user_email FROM `users` WHERE user_id = '$thread_user_id'";
+            $result2 = mysqli_query($conn, $sql2);
+            $rows2 = mysqli_fetch_assoc($result2);
 
             echo '<div class="media my-3">
             <img class="mr-3" src="img/default_user.jpg" alt="Generic placeholder image" style="width: 54px;">
             <div class="media-body">
-                <p class="font-weight-bold my-0">Anonymous user at ' . timeAgo($thread_time) . '</p>
                 <h5 class="mt-0"><a class="text-dark mt-0" href="thread.php?threadid=' . $id . '">' . $title . '</a> </h5>
                 ' . $desc . '
+            </div>
+            <div>
+                <p class="font-weight-bold my-0">Asked by '. $rows2['user_email'] .' at ' . timeAgo($thread_time) . '</p>
             </div>
         </div>';
         }
