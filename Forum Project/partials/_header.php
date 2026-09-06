@@ -77,3 +77,16 @@ if (isset($_GET['signupsuccess']) && $_GET['signupsuccess'] == "false") {
     </button>
 </div>';
 }
+
+
+
+if (isset($_GET['loginsuccess']) && $_GET['loginsuccess'] == "false") {
+  echo '<div class="alert alert-danger alert-dismissible fade show my-0" role="alert">
+    <strong>Login Failed!</strong> ' . htmlspecialchars($_GET['error']) . '
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>';
+}
+
+?>
