@@ -20,8 +20,9 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
+    <?php include 'partials/_header.php'; ?>
+
 
 
 

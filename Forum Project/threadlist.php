@@ -20,8 +20,9 @@
 </head>
 
 <body class="d-flex flex-column" style="min-height: 100vh;">
-    <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
+    <?php include 'partials/_header.php'; ?>
+    
     <?php
     function timeAgo($datetime)
     {
@@ -68,6 +69,14 @@
         //Insert thread in db
         $th_title = mysqli_real_escape_string($conn, $_POST['title']);
         $th_desc = mysqli_real_escape_string($conn, $_POST['desc']);
+
+        $th_title = str_replace("<","&lt", $th_title);
+        $th_title = str_replace(">","&gt", $th_title);
+
+        $th_desc = str_replace("<","&lt", $th_desc);
+        $th_desc = str_replace(">","&gt", $th_desc);
+
+
         $user_id = $_SESSION['user_id'];
         $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '$user_id', current_timestamp())";
         $result = mysqli_query($conn, $sql);
@@ -139,7 +148,7 @@
 
 
 
-    <div class="container">
+    <div class="container mb-5">
         <h1 class="my-2">Browse Questions</h1>
 
         <?php

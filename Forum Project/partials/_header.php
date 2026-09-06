@@ -19,14 +19,18 @@ echo '<nav class="navbar navbar-expand-lg navbar-light bg-dark">
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Categories
+          Top Categories
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">';
+
+        /** @var mysqli $conn */
+        $sql = "SELECT category_name,category_id FROM `categories` LIMIT 4";
+        $result = mysqli_query($conn, $sql);
+        while($rows = mysqli_fetch_assoc($result)){
+          echo'<a class="dropdown-item" href="/PHP-Learning/Forum%20Project/threadlist.php?catid='.$rows['category_id'].'">'. $rows['category_name']. '</a>';
+        }
+
+        echo'</div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="contact.php">Contact</a>
@@ -35,8 +39,8 @@ echo '<nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <div class="row mx-2">';
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-  echo '<form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+  echo '<form class="form-inline my-2 my-lg-0" action="search.php" method="get">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       <p class="text-light my-0 mx-2">Welcome ' . $_SESSION['email'] . '
       </p> 

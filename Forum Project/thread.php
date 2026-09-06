@@ -20,8 +20,9 @@
 </head>
 
 <body class="d-flex flex-column" style="min-height: 100vh;">
-    <?php include 'partials/_header.php'; ?>
     <?php include 'partials/_dbconnect.php'; ?>
+    <?php include 'partials/_header.php'; ?>
+    
     <?php
     function timeAgo($datetime)
     {
@@ -60,6 +61,11 @@
         $noResult = false;
         $title = $rows['thread_title'];
         $desc = $rows['thread_desc'];
+        $thread_user_id = $rows['thread_user_id'];
+        $sql2 = "SELECT user_email FROM `users` WHERE user_id = '$thread_user_id'";
+        $result2 = mysqli_query($conn, $sql2);
+        $rows2 = mysqli_fetch_assoc($result2);
+        $posted_by = $rows2['user_email'];
     }
 
     ?>
@@ -71,7 +77,8 @@
     if ($method == 'POST') {
         //Insert comment in db
         $comment = mysqli_real_escape_string($conn, $_POST['comment']);
-
+        $comment = str_replace("<","&lt", $comment);
+        $comment = str_replace(">","&gt", $comment);
         $user_email = $_SESSION['email'];
         $sql_user = "SELECT user_id FROM `users` WHERE user_email = '$user_email'";
         $result_user = mysqli_query($conn, $sql_user);
@@ -103,7 +110,7 @@
             <hr class="my-4">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid repellat cum voluptatum explicabo suscipit consequuntur alias doloremque ratione velit distinctio.
             <p>
-                Posted by: <b>Harry</b>
+                Posted by: <b><?php echo$posted_by; ?></b>
             </p>
         </div>
     </div>
@@ -135,7 +142,7 @@
 
 
 
-    <div class="container">
+    <div class="container mb-5">
         <h1 class="my-2">Discussions</h1>
 
         <?php
