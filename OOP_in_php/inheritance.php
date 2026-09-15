@@ -28,7 +28,7 @@ class Programmer extends Employee{
 
 }
 
-$rohan = new Employee();
+$rohan = new Employee(); 
 $rohan->name = "Rohan";
 $rohan->grade = 4.88;
 echo "Rohan grade is: $rohan->grade<br>";
