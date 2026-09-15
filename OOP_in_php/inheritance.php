@@ -7,6 +7,11 @@ class Employee{
   private $salary = 200;
   public $grade = 4.89;
 
+  function __construct($name)
+  {
+    $this->name = $name;
+  }
+
   function setSalary($salary){
     $this->salary = $salary;
   }
@@ -21,6 +26,10 @@ class Employee{
 class Programmer extends Employee{
   private $lang = "php";
 
+  function __construct($name){
+    $this->name = $name;
+  }
+
   function changeLanguage($lang){
     $this->lang = $lang;
     // echo $this->salary; ----> This will throw an error cz salary is private in parent class.
@@ -28,15 +37,13 @@ class Programmer extends Employee{
 
 }
 
-$rohan = new Employee(); 
-$rohan->name = "Rohan";
+$rohan = new Employee("Rohan"); 
 $rohan->grade = 4.88;
 echo "Rohan grade is: $rohan->grade<br>";
 
 
-$geeta = new Programmer();
-$geeta->name = "Geeta";
-$rohan->grade = 4.88;
+$geeta = new Programmer("Geeta");
+$geeta->grade = 4.88;
 echo "Rohan grade is: $geeta->grade<br>";
 $geeta->changeLanguage('python');
 
